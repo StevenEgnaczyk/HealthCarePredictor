@@ -38,21 +38,20 @@ def main():
     print(merged_data.head())
     # END DEBUG
 
-    # Deal with the categorical data (gender, marital status, race, insurance)
+    # Deal with the categorical data (gender, marital status, race, insurance), remove patient_id and label
     encoder = OneHotEncoder()
     encoded_array = encoder.fit_transform(merged_data[['gender', 'insurance', 'marital_status', 'ethnicity']]).toarray()
     encoded_data = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(['gender', 'insurance', 'marital_status', 'ethnicity']))
     final_data = pd.concat([encoded_data, merged_data.drop(columns=['gender', 'insurance', 'marital_status', 'ethnicity'])], axis=1)
     del final_data['patient_id']
+
+    # Get Y (X = final_data, Y = labels array)
+    Y = final_data['label'].to_numpy()
+    del final_data['label']
     # DEBUG: print newly encoded data set
     print()
     print(final_data.head())
     # END DEBUG
-
-
-    # Get Y (X = final_data, Y = labels array)
-    Y = final_data["label"].to_numpy()
-
 
     # Split the dataset (training and validation)
     # Dataset Splitting:
