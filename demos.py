@@ -52,7 +52,7 @@ def main():
 
     # Get Y (X = final_data, Y = labels array)
     Y = final_data["label"].to_numpy()
-
+    final_data.drop(columns=['label'], inplace=True)
 
     # Split the dataset (training and validation)
     # Dataset Splitting:
