@@ -87,13 +87,36 @@ def main():
     prec = tp / (tp + fp)
     recall = tp / (tp + fn)
     spec = tn / (tn + fp)
-    auroc = roc_auc_score(Y_val, dt_clf.predict_proba(X_val)[:,1])
+    auroc2 = roc_auc_score(Y_val, dt_clf.predict_proba(X_val)[:,1])
     print("Validation Values: ")
     print("Accuracy: ", val_acc)
     print("Precision: ", prec)
     print("Recall: ", recall)
     print("Specificity: ", spec)
-    print("AUROC: ", auroc)
+    print("AUROC: ", auroc2)
+
+
+    # Plot ROC curves
+    fpr2, tpr2, thresholds2 = metrics.roc_curve(Y_test, dt_clf.predict_proba(X_test)[:,1], pos_label=1)
+    fpr3, tpr3, thresholds3 = metrics.roc_curve(Y_val, dt_clf.predict_proba(X_val)[:,1], pos_label=1)
+
+    # ROC Curve for test
+    plt.plot(fpr2, tpr2, color='red', lw=2, label='ROC curve (area = %0.2f)' % auroc)
+    plt.plot([0, 1], [0, 1], color='black', lw=2, linestyle='--')
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.title('Receiver Operating Characteristic Curve (Test)')
+    plt.legend(loc="lower right")
+    plt.show()
+
+    # ROC Curve for validation
+    plt.plot(fpr3, tpr3, color='red', lw=2, label='ROC curve (area = %0.2f)' % auroc2)
+    plt.plot([0, 1], [0, 1], color='black', lw=2, linestyle='--')
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.title('Receiver Operating Characteristic Curve (Validation)')
+    plt.legend(loc="lower right")
+    plt.show()
 
 
 main()
