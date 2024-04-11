@@ -44,14 +44,15 @@ def main():
     encoded_data = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(['gender', 'insurance', 'marital_status', 'ethnicity']))
     final_data = pd.concat([encoded_data, merged_data.drop(columns=['gender', 'insurance', 'marital_status', 'ethnicity'])], axis=1)
     del final_data['patient_id']
-
-    # Get Y (X = final_data, Y = labels array)
-    Y = final_data['label'].to_numpy()
-    del final_data['label']
     # DEBUG: print newly encoded data set
     print()
     print(final_data.head())
     # END DEBUG
+
+
+    # Get Y (X = final_data, Y = labels array)
+    Y = final_data["label"].to_numpy()
+    final_data.drop(columns=['label'], inplace=True)
 
     # Split the dataset (training and validation)
     # Dataset Splitting:
@@ -86,13 +87,36 @@ def main():
     prec = tp / (tp + fp)
     recall = tp / (tp + fn)
     spec = tn / (tn + fp)
-    auroc = roc_auc_score(Y_val, dt_clf.predict_proba(X_val)[:,1])
+    auroc2 = roc_auc_score(Y_val, dt_clf.predict_proba(X_val)[:,1])
     print("Validation Values: ")
     print("Accuracy: ", val_acc)
     print("Precision: ", prec)
     print("Recall: ", recall)
     print("Specificity: ", spec)
-    print("AUROC: ", auroc)
+    print("AUROC: ", auroc2)
+
+    # Plot ROC curves
+    fpr2, tpr2, thresholds2 = metrics.roc_curve(Y_test, dt_clf.predict_proba(X_test)[:,1], pos_label=1)
+    fpr3, tpr3, thresholds3 = metrics.roc_curve(Y_val, dt_clf.predict_proba(X_val)[:,1], pos_label=1)
+
+    # ROC Curve for test
+    plt.plot(fpr2, tpr2, color='red', lw=2, label='ROC curve (area = %0.2f)' % auroc)
+    plt.plot([0, 1], [0, 1], color='black', lw=2, linestyle='--')
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.title('Receiver Operating Characteristic Curve (Test)')
+    plt.legend(loc="lower right")
+    plt.show()
+
+    # ROC Curve for validation
+    plt.plot(fpr3, tpr3, color='red', lw=2, label='ROC curve (area = %0.2f)' % auroc2)
+    plt.plot([0, 1], [0, 1], color='black', lw=2, linestyle='--')
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.title('Receiver Operating Characteristic Curve (Validation)')
+    plt.legend(loc="lower right")
+    plt.show()
+
 
 
 main()
