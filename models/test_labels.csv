@@ -1,4 +1,5 @@
 patient_id,probability
+patient_id,prediction
 p100000,0.06
 p100005,0.28
 p100008,0.21

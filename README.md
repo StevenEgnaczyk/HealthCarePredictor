@@ -1,14 +1,8 @@
-train_demos:
-load in patient information
-Parse out time from admittime
-One-hot encode -> insurance, marital_status, ethnicity
-Deal with non-values in marital_status
+Group 9 Data Mining Project:
 
-test_signs -
-Load in information
-Take the average, min, and max of the features
-Do some sort of dimensionality reduction or feature selection to narrow down the features
-Linked by the patient_id
+To run, locate the "Data_Mining.ipynb" JupyterNotebook in the "models" folder.
+There are a few required packages which you can install by running the following:
 
-test_radiology:
-Find some way to parse through all of the radiology reports and tokenize them. and then hack together code from assignment 1 to determine sentiment, should be a value 0 to 1.
+pip install -r requirements.txt
+
+And then you can run the jupyterNotebook to recieve the outputs
