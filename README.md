@@ -5,4 +5,6 @@ There are a few required packages which you can install by running the following
 
 pip install -r requirements.txt
 
-And then you can run the jupyterNotebook to recieve the outputs
+And then you can run the jupyterNotebook to recieve the outputs. 
+
+The predictions will be generated in a .csv file named 'test_labels.csv'
